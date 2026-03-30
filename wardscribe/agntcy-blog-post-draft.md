@@ -33,7 +33,7 @@ The core of AGNTCY is the **Open Agent Schema Framework (OASF)**, a structured s
 - **Agent records**: structured metadata with versioning, skills, domains, and locators
 - **Skill taxonomy**: standardized capability classifications (50+ skills across 15 categories)
 - **Domain ontologies**: industry-specific context (24 domains from healthcare to devops)
-- **Protocol modules**: declarative support for MCP, ACP, A2A, and observability
+- **Protocol modules**: declarative support for MCP, SLIM, A2A, and observability
 - **Evaluation data**: standardized quality metrics and performance benchmarks
 
 Think of OASF as the schema behind an agent's `package.json`. The machine-readable contract that answers: what does this agent do, how do you run it, and how good is it?
@@ -312,7 +312,7 @@ Three priorities for Q2:
 
 **AGNTCY Agent Directory Integration.** Direct federation with the AGNTCY Agent Directory Service: one-click import into WardScribe, automatic sync of updates, and cross-registry search. The OASF bidirectional converter is already the foundation for this.
 
-**ACP (Agent Connect Protocol) Support.** AGNTCY's runtime protocol defines how agents communicate at execution time. Adding ACP module detection and runtime support means WardScribe-registered agents can be orchestrated by any ACP-compatible framework, not just the `ward run` CLI.
+**SLIM (Secure Low-Latency Interactive Messaging) Support.** AGNTCY's messaging protocol provides the secure, scalable transport layer for agent-to-agent communication. Built on gRPC with end-to-end MLS encryption, SLIM enables real-time, multi-modal state exchange between agents running anywhere—data centers, browsers, mobile devices, or across organizational boundaries. Adding SLIM support means WardScribe-registered agents can communicate securely with any SLIM-compatible runtime, with microsecond-level latencies and quantum-safe cryptography. This complements A2A (Agent-to-Agent) for capability discovery and MCP for tool access, completing the interoperability stack.
 
 **WardPack as an OASF Profile.** I've already proposed this to the AGNTCY working group. The idea is to formalize WardPack's enterprise extensions (confidence tensor, LLM profiles, persona configuration) as an OASF Profile, similar to how OCI artifacts extend the container image spec. The proposed new skill categories for the OASF taxonomy:
 
@@ -341,7 +341,7 @@ The registry is in private beta with early users. OASF export/import is shipped.
 Multi-registry federation. Agents published on WardScribe are discoverable from AGNTCY Directory, and vice versa. Decentralized discovery backed by OASF's content-addressed record format. Cross-registry reputation that can't be gamed by gaming a single platform.
 
 **Phase 3: Autonomous Composition (2027)**
-Agent-to-agent negotiation via ACP. The Skill Graph composing multi-agent workflows from natural language requirements. Automated compliance verification for EU AI Act and SOC 2. Agents that improve their own WardPack metadata based on observed performance.
+Agent-to-agent negotiation via SLIM. The Skill Graph composing multi-agent workflows from natural language requirements. Automated compliance verification for EU AI Act and SOC 2. Agents that improve their own WardPack metadata based on observed performance.
 
 ### Nemotron 3 Super and Agent Swarms
 
@@ -357,7 +357,7 @@ More interesting is what this opens up for **agent swarms**: instead of a single
 
 One thread I keep pulling on is agent identity. AGNTCY has an Identity working group focused on publisher verification and trust models, and that intersection of registry and identity is where I think some genuinely hard problems live.
 
-The question isn't just "who published this agent?" I already have Ed25519 publisher signing for that. The deeper question is: what is the identity of the agent itself? When an agent acts on behalf of a user, calls external APIs, or communicates with another agent via ACP, how does the receiving system know what it's talking to, what it's authorized to do, and whether it's been tampered with since it was signed?
+The question isn't just "who published this agent?" I already have Ed25519 publisher signing for that. The deeper question is: what is the identity of the agent itself? When an agent acts on behalf of a user, calls external APIs, or communicates with another agent via SLIM, how does the receiving system know what it's talking to, what it's authorized to do, and whether it's been tampered with since it was signed?
 
 In a recent AGNTCY Identity working group meeting, someone shared [kyapay.org](https://kyapay.org), and it sparked some thinking about decentralized identity models applied to agents. Something analogous to DIDs but designed for the agentic context: portable across providers, revocable, and verifiable without a central authority. The constraint is that it has to work across the LLM and runtime diversity that WardScribe already handles. An agent identity system that only works with OpenAI-hosted agents is useless here.
 
